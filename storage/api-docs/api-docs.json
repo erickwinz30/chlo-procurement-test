@@ -1,0 +1,1020 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Procurement Backend API",
+        "description": "API documentation for internal procurement workflow.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register user and get bearer token",
+                "operationId": "1819d3e9d6b8f16d6922d06006a2a130",
+                "responses": {
+                    "201": {
+                        "description": "User registered"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login and get bearer token",
+                "operationId": "a4fe6a4c59acf801bd0b5cf181b98ccd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "employee@test.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login success"
+                    },
+                    "422": {
+                        "description": "Validation or credential error"
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get current authenticated user",
+                "operationId": "95194c3f5709590c7cac261ef85fd18d",
+                "responses": {
+                    "200": {
+                        "description": "Current user"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout current user",
+                "operationId": "1d4350a4671c811a9561fade751879e2",
+                "responses": {
+                    "200": {
+                        "description": "Logged out"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests": {
+            "get": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Get employee requests",
+                "operationId": "1c73884b8d9082efba06a5a8f1a3b42f",
+                "responses": {
+                    "200": {
+                        "description": "Request list"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Create employee draft request",
+                "operationId": "ab84430f0be2bef580b5aea8db790c55",
+                "responses": {
+                    "201": {
+                        "description": "Draft created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}": {
+            "get": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Get employee request detail",
+                "operationId": "39b178b4dc8597db937f57ac2c583ea9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Update employee draft request",
+                "operationId": "c5cee37cb608c4559edec290d09926bc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request updated"
+                    },
+                    "422": {
+                        "description": "Business rule or validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Cancel employee draft request",
+                "operationId": "5cca1fc93f27865895ac1c3d5682ebc4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "422": {
+                        "description": "Only draft can be cancelled"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/submit": {
+            "post": {
+                "tags": [
+                    "Requests - Employee"
+                ],
+                "summary": "Submit employee draft request",
+                "operationId": "3ecbd04bb22cdfe51be12ff100229bdd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Submitted"
+                    },
+                    "422": {
+                        "description": "Business rule error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/verification-queue": {
+            "get": {
+                "tags": [
+                    "Requests - Purchasing"
+                ],
+                "summary": "Get purchasing verification queue",
+                "operationId": "8f5968da7e8e68c87338ec60ba95b9b9",
+                "responses": {
+                    "200": {
+                        "description": "Queue data"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/verification-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Requests - Purchasing"
+                ],
+                "summary": "Get purchasing verification queue detail",
+                "operationId": "4f326ea9957039e833f5bea97acf2bfe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Queue detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/verify": {
+            "post": {
+                "tags": [
+                    "Requests - Purchasing"
+                ],
+                "summary": "Verify submitted request by purchasing",
+                "operationId": "3c93d31506b859a8c5209d0700654500",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request verified"
+                    },
+                    "422": {
+                        "description": "Business rule error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/approval-queue": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get manager approval queue",
+                "operationId": "58653fab6ef9dd65c46e4c2df3027a04",
+                "responses": {
+                    "200": {
+                        "description": "Queue data"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/approval-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get manager approval queue detail",
+                "operationId": "527da13a1efd84c5ba1ce5e728c1ab31",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Queue detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/approvals/approved": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get approved approvals list",
+                "operationId": "afbd2563025fce5450498f9ddbe946d0",
+                "responses": {
+                    "200": {
+                        "description": "Approved approvals"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/history": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get manager decision history",
+                "operationId": "d276736465cce50286b7a4b921eb2f69",
+                "responses": {
+                    "200": {
+                        "description": "Decision history"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/approve": {
+            "post": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Approve request as manager",
+                "operationId": "24cc4a9bb96fdcdb7831743f355dcb38",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request approved"
+                    },
+                    "422": {
+                        "description": "Business rule error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/reject": {
+            "post": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Reject request as manager",
+                "operationId": "83478b9c9b1a55e94254bbc6d74dca14",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request rejected"
+                    },
+                    "422": {
+                        "description": "Business rule error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/approvals": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get approvals of a request",
+                "operationId": "245ecf115bca8af8976a95586e825ea5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Approvals list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/history": {
+            "get": {
+                "tags": [
+                    "Requests - Manager"
+                ],
+                "summary": "Get status history of a request",
+                "operationId": "a243d0a4316596bbf2d0f66d9c5b9c45",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status history"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/procurement-queue": {
+            "get": {
+                "tags": [
+                    "Requests - Warehouse"
+                ],
+                "summary": "Get warehouse procurement queue",
+                "operationId": "1a805bae2a17806dcd06b273577d22ca",
+                "responses": {
+                    "200": {
+                        "description": "Queue data"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/procurement-queue/{id}": {
+            "get": {
+                "tags": [
+                    "Requests - Warehouse"
+                ],
+                "summary": "Get warehouse procurement queue detail",
+                "operationId": "aaa1c04d4741a1d4cb8b13e06d0a5767",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Queue detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/vendors": {
+            "get": {
+                "tags": [
+                    "Vendors"
+                ],
+                "summary": "Get vendor list",
+                "operationId": "dc59f74ffd8b3c9db9134ef6c74a5ba7",
+                "responses": {
+                    "200": {
+                        "description": "Vendor list"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Vendors"
+                ],
+                "summary": "Create vendor (purchasing)",
+                "operationId": "372159edb9690ba31634efdeb0ae1690",
+                "responses": {
+                    "201": {
+                        "description": "Vendor created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/procure": {
+            "post": {
+                "tags": [
+                    "Procurement"
+                ],
+                "summary": "Create procurement order from approved request",
+                "operationId": "f1259348f9b584d1fa278a9ebb928fd2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Procurement order created"
+                    },
+                    "422": {
+                        "description": "Business validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/requests/{id}/issue": {
+            "post": {
+                "tags": [
+                    "Warehouse"
+                ],
+                "summary": "Issue stock to requester and complete request",
+                "operationId": "85e0a20f090421671964e3db07606d5e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stock issued"
+                    },
+                    "422": {
+                        "description": "Insufficient stock or invalid payload"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stocks": {
+            "get": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Get warehouse stock list",
+                "operationId": "7c631b1ff1b8ccd8cbbb44daabf6269c",
+                "responses": {
+                    "200": {
+                        "description": "Stock list"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stocks/{id}": {
+            "get": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Get stock detail",
+                "operationId": "a09351d5b87e0cec422ed02fcd72d9e7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stock detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stocks/movements": {
+            "get": {
+                "tags": [
+                    "Stock Movements"
+                ],
+                "summary": "Get detailed stock movements (warehouse/purchasing)",
+                "operationId": "080b5d8c8b2c6a03970b6da702d79af3",
+                "responses": {
+                    "200": {
+                        "description": "Movement list"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stocks/movements/{id}": {
+            "get": {
+                "tags": [
+                    "Stock Movements"
+                ],
+                "summary": "Get stock movement detail",
+                "operationId": "9cc4b8389e6510ec08bb1f900aa7773f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movement detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stocks/movements/summary": {
+            "get": {
+                "tags": [
+                    "Stock Movements"
+                ],
+                "summary": "Get stock movement summary (manager)",
+                "operationId": "700588d7f6028dc1653f196328acc008",
+                "responses": {
+                    "200": {
+                        "description": "Movement summary"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/procurement-orders": {
+            "get": {
+                "tags": [
+                    "Procurement Orders"
+                ],
+                "summary": "Get procurement order list",
+                "operationId": "0662099dcde20771f4a3f2abaa6bf494",
+                "responses": {
+                    "200": {
+                        "description": "Order list"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/procurement-orders/{id}": {
+            "get": {
+                "tags": [
+                    "Procurement Orders"
+                ],
+                "summary": "Get procurement order detail",
+                "operationId": "45b9f820a256f51ae0774da42253e862",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/procurement-orders/{id}/status": {
+            "put": {
+                "tags": [
+                    "Procurement Orders"
+                ],
+                "summary": "Update procurement order status",
+                "operationId": "c0de1d94d0146bf375a2cdb1cfe96fe1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status updated"
+                    },
+                    "422": {
+                        "description": "Invalid transition"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Use Bearer token from /api/login",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Requests - Employee",
+            "description": "Requests - Employee"
+        },
+        {
+            "name": "Requests - Purchasing",
+            "description": "Requests - Purchasing"
+        },
+        {
+            "name": "Requests - Manager",
+            "description": "Requests - Manager"
+        },
+        {
+            "name": "Requests - Warehouse",
+            "description": "Requests - Warehouse"
+        },
+        {
+            "name": "Vendors",
+            "description": "Vendors"
+        },
+        {
+            "name": "Procurement",
+            "description": "Procurement"
+        },
+        {
+            "name": "Warehouse",
+            "description": "Warehouse"
+        },
+        {
+            "name": "Stocks",
+            "description": "Stocks"
+        },
+        {
+            "name": "Stock Movements",
+            "description": "Stock Movements"
+        },
+        {
+            "name": "Procurement Orders",
+            "description": "Procurement Orders"
+        }
+    ]
+}

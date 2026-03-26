@@ -108,3 +108,14 @@ Jalankan test warehouse/procurement saja:
 ```bash
 php artisan test tests/Feature/VendorAndWarehouseProcurementTest.php
 ```
+
+## API Docs (Swagger)
+
+- Swagger UI: `/api/documentation`
+- Raw OpenAPI JSON: `/docs`
+
+Regenerate docs setelah ubah annotation:
+
+```bash
+php artisan l5-swagger:generate
+```
