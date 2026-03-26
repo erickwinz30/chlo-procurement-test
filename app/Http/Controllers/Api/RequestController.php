@@ -888,7 +888,7 @@ class RequestController extends Controller
 
         if ($normalizedSpec !== null && $normalizedSpec !== '') {
             $stock = (clone $baseQuery)
-                ->whereRaw('LOWER(TRIM(COALESCE(specification, ""))) = ?', [$normalizedSpec])
+                ->whereRaw("LOWER(TRIM(COALESCE(specification, ''))) = ?", [$normalizedSpec])
                 ->first();
 
             if ($stock instanceof Stock) {
